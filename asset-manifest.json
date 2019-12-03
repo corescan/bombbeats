@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/bombbeats/static/css/main.8f768872.chunk.css",
+    "main.js": "/bombbeats/static/js/main.5e246bc6.chunk.js",
+    "main.js.map": "/bombbeats/static/js/main.5e246bc6.chunk.js.map",
+    "runtime-main.js": "/bombbeats/static/js/runtime-main.025281be.js",
+    "runtime-main.js.map": "/bombbeats/static/js/runtime-main.025281be.js.map",
+    "static/js/2.26330197.chunk.js": "/bombbeats/static/js/2.26330197.chunk.js",
+    "static/js/2.26330197.chunk.js.map": "/bombbeats/static/js/2.26330197.chunk.js.map",
+    "index.html": "/bombbeats/index.html",
+    "precache-manifest.c50ac5e81037ceec808f2542f736f425.js": "/bombbeats/precache-manifest.c50ac5e81037ceec808f2542f736f425.js",
+    "service-worker.js": "/bombbeats/service-worker.js",
+    "static/css/main.8f768872.chunk.css.map": "/bombbeats/static/css/main.8f768872.chunk.css.map",
+    "static/media/Hat_XL_13.wav": "/bombbeats/static/media/Hat_XL_13.faea9d0d.wav",
+    "static/media/RT_Ian_Chang_Kick_1_Drums_Ian_Chang_one_shot.wav": "/bombbeats/static/media/RT_Ian_Chang_Kick_1_Drums_Ian_Chang_one_shot.e1d4e232.wav",
+    "static/media/RT_Ian_Chang_Tea_Towel_Snare_1_Medium_1_Drums_Ian_Chang_one_shot.wav": "/bombbeats/static/media/RT_Ian_Chang_Tea_Towel_Snare_1_Medium_1_Drums_Ian_Chang_one_shot.bb5dc9f1.wav",
+    "static/media/index.css": "/bombbeats/static/media/digital-7 (mono).58045dab.ttf"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.025281be.js",
+    "static/js/2.26330197.chunk.js",
+    "static/css/main.8f768872.chunk.css",
+    "static/js/main.5e246bc6.chunk.js"
+  ]
+}
