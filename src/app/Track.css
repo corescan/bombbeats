@@ -1,0 +1,6 @@
+.Track-container {
+    display: flex;
+    /* background-color: #999; */
+    height: 40px;
+    align-items: center;
+}

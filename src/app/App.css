@@ -1,0 +1,10 @@
+.App {
+  padding-top: 40px;
+  display: flex;
+  flex-flow: column;
+}
+
+.App--beat-select {
+  width: 808px;
+  margin: auto;
+}

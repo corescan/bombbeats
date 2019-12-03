@@ -1,0 +1,21 @@
+.RunningLights-container {
+    margin: 16px 0 4px 110px;
+    display: flex;
+}
+
+.RunningLights-light {
+    border-radius: 5px;
+    background-color: #171717;
+    height: 12px;
+    width: 32px;
+    margin: 0 4px 0 0;
+    transition: background-color .01s ease-out;
+}
+
+.RunningLights-light.active {
+    background-color: rgb(255, 248, 151);
+}
+
+.RunningLights-light:nth-child(4n) {
+    margin: 0 10px 0 0;
+}

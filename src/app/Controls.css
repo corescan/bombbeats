@@ -1,0 +1,124 @@
+ .Controls-container { 
+    display: flex;
+    align-items: center;
+    margin: 0 110px 12px 110px;
+ }
+
+ .playback {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    width: 128px;
+    height: 64px;
+    border: 1px solid #999;
+    border-radius: 5px;
+    overflow: hidden;
+ }
+
+ .playback button{
+     cursor: pointer;
+     outline: none;
+     border: 0;
+     padding: 0;
+     margin: 0;
+     /* background-color: #424242; */
+     /* LIGHT THEME */
+     background-color: #666;
+
+     height: 64px;
+     width: 64px;
+     line-height: 64px;
+     font-family: 'Material Icons';
+     font-size: 48px;
+     color: #212121;
+     transition: background-color .1s ease;
+ }
+
+ .playback button:hover {
+    /* background-color: #333; */
+    /* LIGHT THEME */
+    background-color: #424242;
+ }
+
+ button.play {
+    transition: color .3s ease;
+}
+button.play:not(.active):hover  {
+    color: rgb(76, 170, 253);
+}
+button.play.active {
+    animation: blinking 1.3s infinite;
+}
+
+button.stop {
+    transition: color .3s ease;
+}
+
+button.stop.active:hover {
+    color: rgb(76, 170, 253);
+}
+
+
+.bpm-slider-container {
+    flex-grow: 1;
+    text-align: right;
+    padding-right: 8px;
+}
+
+/* The slider itself */
+.bpm-slider {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: 100px; /* Full-width */
+    height: 4px; /* Specified height */
+    border-radius: 2px;
+    background: #212121; /* Grey background */
+    outline: none; /* Remove outline */
+  }
+  
+  /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+  .bpm-slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    border-radius: 6px;
+    width: 12px; /* Set a specific slider handle width */
+    height: 32px; /* Slider handle height */
+    background:  rgb(76, 170, 253); /* Green background */
+    cursor: pointer; /* Cursor on hover */
+  }
+
+    /* Mouse-over effects */
+.bpm-slider::-webkit-slider-thumb:hover {
+    opacity: 1; /* Fully shown on mouse-over */
+}
+
+.bpm-readout {
+    width: 108px;
+    height: 64px;
+    border-radius: 5px;
+    border: 1px solid #999;
+    background-color: #171717;
+    box-sizing: border-box;
+    text-align: right;
+}
+.bpm-readout div {
+    user-select: none;
+    font-family: 'Digital';
+    color: rgb(76, 170, 253);
+    line-height: 68px;
+    font-size: 48px;
+    padding-right: 20px;
+}
+
+
+@keyframes blinking {
+    0%{
+        color: rgb(76, 170, 253);
+    }
+    50% {
+        color: #212121;
+    }
+    100%{
+        color: rgb(76, 170, 253);
+    }
+  }
