@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 
-import Sequencer from './Sequencer';
 import './App.css';
+import Sequencer from './components/sequencer/Sequencer';
+import Synth from './components/synth/Synth';
 
 class App extends Component {
 
@@ -59,6 +60,7 @@ class App extends Component {
             beat={beat}
           />
         : null}
+        <Synth />
       </div>
     );
   }

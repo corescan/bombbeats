@@ -23,9 +23,8 @@ class Clock extends EventEmitter {
         super();
 
         // input parameters (defaults)
-        this.subdivision = 16;      // changeable
-        this.bpm = 128;             // changeable
-        this.sequenceLength = 16;   // nonchangeable
+        this.subdivision = void 0;
+        this.bpm = void 0;        
 
         // timer variables
         this.startTime = 0;
@@ -44,14 +43,14 @@ class Clock extends EventEmitter {
         this.step = this.step.bind(this);
         this.setBPM = this.setBPM.bind(this);
         this.setParams = this.setParams.bind(this)
-        this.getParams = this.getParams.bind(this);
     }
 
     start() {
         if (this.isRunning) {
             return;
         }        
-        // align timing variables
+        
+        // reset timing variables
         this.startTime = Audio.getCurrentTime();
         this.expectedTime = 0;
         this.actualTime = 0;
@@ -85,26 +84,10 @@ class Clock extends EventEmitter {
         this.currentStep++;
         this.expectedTime += this.interval / 1000;
     }
-
-    handleChange() {
-        this.emit('change', this.getParams());
-    }
-
-    getSequenceLength() {
-        return this.sequenceLength;
-    }
-
-    getParams() {
-        return {
-            subdivision: this.subdivision,
-            bpm: this.bpm
-        }
-    }
     
     setBPM(bpm) {
         this.bpm = bpm;
         this.interval = calcStepDurationMillis(bpm, this.subdivision);
-        this.handleChange();
     }
 
     setParams(params) {

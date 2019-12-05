@@ -1,0 +1,18 @@
+.SquareBacklitButton--button {
+    cursor: pointer;
+    font-family: monospace;
+    word-wrap: break-word;
+    text-transform: uppercase;
+    padding: 6px;
+    width: 48px;
+    height: 48px;
+    border-radius: 5px;
+    background-color: rgb(238, 237, 226);
+    margin-left: 8px;
+    margin-bottom: 8px;
+    transition: background-color 0.3s ease-out;
+}
+
+.SquareBacklitButton--button.enabled {
+    background-color: rgb(255, 248, 151);
+}

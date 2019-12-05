@@ -1,35 +1,42 @@
 import BufferLoader from './BufferLoader';
+import distortionCurve from './distortionCurve';
 
-/**
- * Recipe for a distortion curve, taken from 
- * https://code-examples.net/en/docs/dom/waveshapernode
- * 
- * @param {Number} amount 
- */
-function makeDistortionCurve(amount) {
-    const k = typeof amount === 'number' ? amount : 50;
-    const n_samples = 44100;
-    const curve = new Float32Array(n_samples);
-    const deg = Math.PI / 180;
-
-    for (let i = 0 ; i < n_samples; i++ ) {
-      let x = i * 2 / n_samples - 1;
-      curve[i] = ( 3 + k ) * x * 20 * deg / ( Math.PI + k * Math.abs(x) );
-    }
-    return curve;
-};
-
-const HIGH_PASS = 750;
-const LOW_PASS = 500;
+const HIGH_PASS_Hz = 750;
+const LOW_PASS_Hz = 500;
 const DISTORTION_AMOUNT = 33;
-const DISTORTION_CURVE = makeDistortionCurve(DISTORTION_AMOUNT);
+const DISTORTION_CURVE = distortionCurve(DISTORTION_AMOUNT);
+
+export const WAVEFORM = {
+    SINE: "sine",
+    TRIANGLE: "triangle",
+    SAW: "sawtooth",
+    SQUARE: "square"
+}
+
+export const EFFECTS = [
+    'compressor',
+    'distortion',
+    'highpass',
+    'lowpass'
+]
 
 class AudioService {
     constructor() {
         this.audioCtx = new AudioContext();
         this.trackBuffers = [];
         this.masterChannel = [];        
+
+        this.osc = this.audioCtx.createOscillator();
+        this.osc.type = WAVEFORM.SAW;
+
+        this.oscGainNode = this.audioCtx.createGain();
+        this.oscGainNode.gain.setValueAtTime(0.05, this.audioCtx.currentTime);
+        this.oscFilter = this.audioCtx.createBiquadFilter();
+        this.oscFilter.type = 'lowshelf';
+        this.oscFilter.gain.setValueAtTime(20, this.audioCtx.currentTime);
+        
         this.scheduleAudio = this.scheduleAudio.bind(this);
+        this.oscillateOn = this.oscillateOn.bind(this);
     }
 
     loadAudio(files) {
@@ -60,6 +67,34 @@ class AudioService {
         source.start(time);
     }
 
+    oscillateOn(type, pitch) {
+        this.osc.type = type; // see WAVEFORM
+        this.osc.frequency.setValueAtTime(pitch, this.audioCtx.currentTime); // value in hertz
+        this.osc.connect(this.oscGainNode);
+        this.oscGainNode.connect(this.oscFilter);
+        this.oscFilter.connect(this.audioCtx.destination);
+        // go!
+        this.osc.start();
+    }
+
+    oscillateOff() {
+        try {
+            this.osc.stop();
+        } catch(err) {
+            console.error(err);
+        } finally {
+            this.osc = this.audioCtx.createOscillator();
+        }
+    }
+
+    setOscPitch(pitch) {
+        this.osc.frequency.setValueAtTime(pitch, this.audioCtx.currentTime);
+    }
+
+    setOscWaveform(type) {
+        this.osc.type = type;
+    }
+
     getCurrentTime() {
         return this.audioCtx.currentTime;
     }
@@ -79,7 +114,7 @@ function applyEffects(node, audioCtx, params, effects) {
         node = gainNode;
     }
 
-    if (effects && effects.getIn(['compression','enabled'])) {
+    if (effects && effects.getIn(['compressor','enabled'])) {
         let compressor = makeCompressor(audioCtx);
         node.connect(compressor);
         node = compressor;
@@ -92,13 +127,13 @@ function applyEffects(node, audioCtx, params, effects) {
     }
 
     if (effects && effects.getIn(['highpass','enabled'])) {
-        let highpass = makeFilter(audioCtx, {type: 'highpass', frequency: HIGH_PASS});
+        let highpass = makeFilter(audioCtx, {type: 'highpass', frequency: HIGH_PASS_Hz});
         node.connect(highpass);
         node = highpass;
     }
 
     if (effects && effects.getIn(['lowpass','enabled'])) {
-        let lowpass = makeFilter(audioCtx, {type: 'lowpass', frequency: LOW_PASS});
+        let lowpass = makeFilter(audioCtx, {type: 'lowpass', frequency: LOW_PASS_Hz});
         node.connect(lowpass);
         node = lowpass;
     }

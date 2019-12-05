@@ -2,11 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import './Controls.css';
 
-import Clock from './util/Clock';
-
-function handleChangeBPM(event) {
-    Clock.setBPM(event.target.value);
-}
+import Clock from '../../util/Clock';
 
 export default function Controls(props) {
     const BPM = props.bpm;
@@ -36,7 +32,7 @@ export default function Controls(props) {
                     value={BPM}
                     min={10}
                     max={300}
-                    onChange={handleChangeBPM}
+                    onChange={props.onChangeBPM}
                 />
             </li>
             <li className="bpm-readout">

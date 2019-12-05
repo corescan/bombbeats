@@ -2,14 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './Track.css';
 
-import Clock from './util/Clock';
 import TouchPad from './TouchPad';
 
-
 function renderTouchPads(props) {
-    let stepCount = Clock.getSequenceLength();
+    const { length } = props
     let html = [];
-    for (let step=0; step < stepCount; step++) {
+    for (let step = 0; step < length; step++) {
         html.push(
             <TouchPad
                 key={`touch-pad-${step}`}

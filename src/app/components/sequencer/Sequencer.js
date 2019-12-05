@@ -4,19 +4,21 @@ import PropTypes from 'prop-types';
 import {Component} from 'react';
 import classnames from 'classnames';
 
-import Clock from './util/Clock';
-import Audio from './util/AudioService';
+import Clock from '../../util/Clock';
+import Audio from '../../util/AudioService';
 
 import Track from './Track';
 import Controls from './Controls';
 import Effects from './Effects';
 import RunningLights from './RunningLights';
 
-import { toggleEffect } from './actions/effectsActions';
+import { toggleEffect } from '../../actions/effectsActions';
 
 import './Sequencer.css';
 
-function setEnabledTracks(sounds) {
+const SEQUENCE_LENGTH = 16;
+
+const setEnabledTracks = sounds => {
   let tracksEnabled = {};
   sounds.forEach(sound => {
     tracksEnabled[sound.name] = true
@@ -24,27 +26,41 @@ function setEnabledTracks(sounds) {
   return tracksEnabled;
 }
 
+const setClockParamsFromProps = (props) => {
+    Clock.setParams({
+      bpm: props.beat.bpm,
+      subdivision: props.beat.subdivision
+    });
+}
+
+const mapBeatDataToState = props => {
+  return {
+    beatKey: props.beat.key,
+
+    // Control BPM value
+    bpm: props.beat.bpm,
+
+    // Control track-enabled state
+    enabledTracks: setEnabledTracks(props.sounds),
+
+    // Control sequence editing
+    sequence: props.beat.sequence
+  }
+}
+
 class Sequencer extends Component {
   constructor(props) {
     super(props);
 
-    let clockParams = {
-      bpm: props.beat.bpm,
-      subdivision: props.beat.subdivision
-    }
-
-    let state = {
-      beatKey: props.beat.key,
-      enabledTracks: setEnabledTracks(props.sounds),
-      sequence: props.beat.sequence,
+    let state = {  
+      // Control playback state
       isPlaying: false,
+
+      // Control sequencer cursor
       currentStep: 0,
-      clockParams: clockParams
     };
 
-    this.state = state;
-
-    Clock.setParams(clockParams);
+    this.state = Object.assign({}, state, mapBeatDataToState(props));
 
     this.handleClickTouchPad = this.handleClickTouchPad.bind(this);
     this.handleClickTrackname = this.handleClickTrackname.bind(this);
@@ -52,37 +68,32 @@ class Sequencer extends Component {
     this.handleClockStep = this.handleClockStep.bind(this);
     this.handleClockStart = this.handleClockStart.bind(this);
     this.handleClockStop = this.handleClockStop.bind(this);
-    this.handleClockParamChange = this.handleClockParamChange.bind(this);
+    this.handleChangeBPM = this.handleChangeBPM.bind(this);
     this.scheduleSequenceStep = this.scheduleSequenceStep.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.togglePlayback = this.togglePlayback.bind(this);
   }
 
   componentDidMount() {
     Clock.addListener('start', this.handleClockStart);
     Clock.addListener('stop', this.handleClockStop);
     Clock.addListener('step', this.handleClockStep);
-    Clock.addListener('change', this.handleClockParamChange);
+    document.addEventListener('keydown', this.handleKeyDown);
 
     Audio.loadAudio(this.props.sounds);
+    setClockParamsFromProps(this.props);
+  }
+
+  componentWillUnmount() {
+      document.removeEventListener('keydown', this.handleKeyDown);
   }
 
   static getDerivedStateFromProps(props, state) {
     if (props.beat.key !== state.beatKey) {
-      if (state.isPlaying) {
-        Clock.stop();
-      }
-
-      // MOVE CLOCK PARAMS TO STORE. RECEIVE PARAMS AS PROPS.
-
-      let clockParams = {
-        bpm: props.beat.bpm,
-        subdivision: props.beat.subdivision
-      };
-
-      state.sequence = props.beat.sequence;
-      state.beatKey = props.beat.key;
-      state.enabledTracks = setEnabledTracks(props.sounds);
-      state.clockParams = clockParams;
-      Clock.setParams(clockParams);
+      // loaded a new beat
+      if (state.isPlaying) Clock.stop();
+      setClockParamsFromProps(props);
+      state = mapBeatDataToState(props);
     }
 
     return state;
@@ -93,7 +104,23 @@ class Sequencer extends Component {
     Clock.removeListener('start', this.handleClockStart);
     Clock.removeListener('stop', this.handleClockStop);
     Clock.removeListener('step', this.handleClockStep);
-    Clock.removeListener('change', this.handleClockParamChange);
+  }
+
+  handleKeyDown(event) {
+    event.preventDefault();
+    // check key code SHIFT
+    const key = event.which || event.key
+    if (key === 32 || key === 'Space') {
+        this.togglePlayback()
+    }
+  }
+
+  togglePlayback() {
+    if (this.state.isPlaying) {
+      Clock.stop();
+    } else {
+      Clock.start();
+    }
   }
 
   /**
@@ -106,8 +133,8 @@ class Sequencer extends Component {
 
     console.log({
       key: this.state.beatKey,
-      bpm: this.state.clockParams.bpm,
-      subdivision: this.state.clockParams.subdivision,
+      bpm: this.props.beat.bpm,
+      subdivision: this.props.beat.subdivision,
       sequence: this.state.sequence
     })
   }
@@ -127,20 +154,19 @@ class Sequencer extends Component {
    * @param {Number} clockStep   The nth step the clock has ticked since starting; 0 start.
    */
   handleClockStep(clockStep) {
-    let sequenceStep = clockStep % Clock.getSequenceLength();
+    let sequenceStep = clockStep % SEQUENCE_LENGTH;
     this.scheduleSequenceStep(sequenceStep, Audio.getCurrentTime());
     this.setState({
       currentStep: sequenceStep
     });
   }
 
-  /**
-   * Clock params changed. Do Update.
-   */
-  handleClockParamChange(params) {
+  handleChangeBPM(event) {
+    const { value } = event.target;
     this.setState({
-      clockParams: params
-    })
+      bpm: value
+    });
+    Clock.setBPM(value);
   }
 
   handleClickTrackname(soundName) {
@@ -210,6 +236,7 @@ class Sequencer extends Component {
           enabled={this.state.enabledTracks[sound.name]}
           trackname={sound.name}
           sequence={sequence[sound.name]}
+          length={SEQUENCE_LENGTH}
           onClickTouchPad={this.handleClickTouchPad}
         />
       )
@@ -217,13 +244,13 @@ class Sequencer extends Component {
   }
 
   render() {
-    const { isPlaying, currentStep, sequence } = this.state;
-    const { bpm } = this.state.clockParams;
+    const { isPlaying, currentStep, sequence, bpm } = this.state;
     const { effects } = this.props;
     return (
       <div className="Sequencer">
         <Controls
           bpm={bpm}
+          onChangeBPM={this.handleChangeBPM}
           isPlaying={isPlaying}
         />
         <Effects
@@ -232,6 +259,7 @@ class Sequencer extends Component {
         />
         <RunningLights
           active={isPlaying}
+          length={SEQUENCE_LENGTH}
           currentStep={currentStep}
         />
         <div className="Sequencer-sequencer">

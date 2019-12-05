@@ -1,0 +1,14 @@
+.WaveformSelector--container {
+    display: flex;
+    align-items: center;
+    background-color: #333;
+    margin: 0 auto;
+    margin-top: 32px;
+    padding: 8px 15px 0 15px;
+    border-radius: 6px;
+    top: 0;
+    left: 100%;
+    width: 262px;
+    height: 64px;
+    box-sizing: border-box;
+}

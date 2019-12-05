@@ -2,11 +2,9 @@ import React from 'react';
 import classnames from 'classnames';
 import './RunningLights.css';
 
-import Clock from './util/Clock';
-
-function renderLights(count, props) {
+function renderLights(length, props) {
     let html = [];
-    for (let idx = 0; idx < count; idx++) {
+    for (let idx = 0; idx < length; idx++) {
         html.push(
             <div 
                 key={`running-light-${idx}`}
@@ -18,10 +16,10 @@ function renderLights(count, props) {
 }
 
 export default function RunningLights(props) {
-    let stepCount = Clock.getSequenceLength();
+    let { length } = props;
     return (
         <ul className="RunningLights-container">
-            {renderLights(stepCount, props)}
+            {renderLights(length, props)}
         </ul>
     );
 }
