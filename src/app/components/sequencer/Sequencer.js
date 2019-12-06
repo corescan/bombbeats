@@ -84,10 +84,6 @@ class Sequencer extends Component {
     setClockParamsFromProps(this.props);
   }
 
-  componentWillUnmount() {
-      document.removeEventListener('keydown', this.handleKeyDown);
-  }
-
   static getDerivedStateFromProps(props, state) {
     if (props.beat.key !== state.beatKey) {
       // loaded a new beat
@@ -104,6 +100,7 @@ class Sequencer extends Component {
     Clock.removeListener('start', this.handleClockStart);
     Clock.removeListener('stop', this.handleClockStop);
     Clock.removeListener('step', this.handleClockStep);
+    document.removeEventListener('keydown', this.handleKeyDown);
   }
 
   handleKeyDown(event) {
