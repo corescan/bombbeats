@@ -3,10 +3,22 @@ import applyEffects from '../lib/applyEffects';
 import Synthesizer from '../lib/synthesizer';
 
 export const EFFECTS = [
-    'compressor',
-    'distortion',
-    'highpass',
-    'lowpass'
+    {
+        key: 'compressor',
+        label: 'compressor'
+    },
+    {
+        key: 'distortion',
+        label: 'distortion'
+    },
+    {
+        key: 'highpass',
+        label: 'high pass'
+    },
+    {
+        key: 'lowpass',
+        label: 'low pass'
+    }
 ]
 
 class AudioService {

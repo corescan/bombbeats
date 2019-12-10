@@ -10,11 +10,11 @@ export default function Effects(props) {
     function renderButtons(settings) {
         return EFFECTS.map(effect => (
             <SquareBacklitButton
-                key={effect}
-                label={effect}
-                enabled={settings.getIn([effect,'enabled'])}
+                key={effect.key}
+                label={effect.label}
+                enabled={settings.getIn([effect.key,'enabled'])}
                 onClick={() => {
-                    props.onClick(effect);
+                    props.onClick(effect.key);
                 }}
             />
         ))

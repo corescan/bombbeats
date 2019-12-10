@@ -3,8 +3,41 @@ import PropTypes from 'prop-types';
 import Immutable from 'immutable';
 import './WaveformSelector.css';
 
+import sineIcon from '../../../assets/images/sine.png';
+import squareIcon from '../../../assets/images/square.png';
+import sawtoothIcon from '../../../assets/images/sawtooth.png';
+import triangleIcon from '../../../assets/images/triangle2.png';
+
 import { WAVEFORM } from '../../lib/oscillator';
 import SquareBacklitButton from '../generic/SquareBacklitButton';
+
+function modifyLabelForButton(key) {
+    switch (WAVEFORM[key]) {
+        case WAVEFORM.SQUARE:
+            return 'squa re';
+        case WAVEFORM.TRIANGLE:
+            return 'tri angle';
+        case WAVEFORM.SAW:
+            return 'saw tooth'
+        default:
+            return WAVEFORM[key];
+    }
+}
+
+function getWaveformIcon(key) {
+    switch (WAVEFORM[key]) {
+        case WAVEFORM.SQUARE:
+            return squareIcon;
+        case WAVEFORM.TRIANGLE:
+            return triangleIcon;
+        case WAVEFORM.SAW:
+            return sawtoothIcon;
+        case WAVEFORM.SINE:
+            return sineIcon;
+        default:
+            return void 0;
+    }
+}
 
 export default function WaveformSelector(props) {
 
@@ -14,7 +47,7 @@ export default function WaveformSelector(props) {
             return (
             <SquareBacklitButton
                 key={key}
-                label={type}
+                icon={getWaveformIcon(key)}
                 enabled={selection === type}
                 onClick={() => {
                     props.onSelect(type);

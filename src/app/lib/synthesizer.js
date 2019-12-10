@@ -14,6 +14,8 @@ export default class Synthesizer {
         for (let i=0; i < numberOfOscillators; i++) {
             this.osc[i] = new Oscillator(context);
         }
+
+        // hardcode a detune value until further dev
         this.osc[0].setDetune(DETUNE);
     }
 
