@@ -8,7 +8,8 @@ export default function SquareBacklitButton(props) {
     if (props.icon) {
         img = (
             <img
-                src={props.icon}
+                alt={props.icon.alt}
+                src={props.icon.src}
                 className='SquareBacklitButton--icon'
             />
         );
@@ -27,5 +28,9 @@ export default function SquareBacklitButton(props) {
 SquareBacklitButton.propTypes = {
     label: PropTypes.string,
     enabled: PropTypes.bool,
+    icon: PropTypes.shape({
+        alt: PropTypes.string,
+        src: PropTypes.string
+    }),
     onClick: PropTypes.func.isRequired
 }

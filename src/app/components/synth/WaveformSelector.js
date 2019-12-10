@@ -11,29 +11,28 @@ import triangleIcon from '../../../assets/images/triangle2.png';
 import { WAVEFORM } from '../../lib/oscillator';
 import SquareBacklitButton from '../generic/SquareBacklitButton';
 
-function modifyLabelForButton(key) {
-    switch (WAVEFORM[key]) {
-        case WAVEFORM.SQUARE:
-            return 'squa re';
-        case WAVEFORM.TRIANGLE:
-            return 'tri angle';
-        case WAVEFORM.SAW:
-            return 'saw tooth'
-        default:
-            return WAVEFORM[key];
-    }
-}
-
 function getWaveformIcon(key) {
     switch (WAVEFORM[key]) {
         case WAVEFORM.SQUARE:
-            return squareIcon;
+            return {
+                    src: squareIcon,
+                    alt: 'square wave'
+                };
         case WAVEFORM.TRIANGLE:
-            return triangleIcon;
+            return {
+                src: triangleIcon,
+                alt: 'triangle wave'
+            };
         case WAVEFORM.SAW:
-            return sawtoothIcon;
+            return {
+                src: sawtoothIcon,
+                alt: 'sawtooth wave'
+            };
         case WAVEFORM.SINE:
-            return sineIcon;
+            return {
+                src: sineIcon,
+                alt: 'sine wave'
+            };
         default:
             return void 0;
     }
