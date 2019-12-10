@@ -1,7 +1,8 @@
 # BOMBBEATS v0.1
 
-Bombbeats is a web-based drum sequencer leveraging the Web Audio API.
+Bombbeats is a web-based drum sequencer and synthesizer leveraging the Web Audio API.
 Version 0.1 offers a simple GUI written in React/Redux. There is no backend (yet).
+Functionality confirmed in Chrome v78 on MacOS 10.14.
 
 This package offers a user the ability to:
 1. Play a pre-set demo sequence.
