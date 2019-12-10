@@ -4,7 +4,7 @@ import Immutable from 'immutable';
 import SquareBacklitButton from '../generic/SquareBacklitButton';
 import './Effects.css';
 
-import { EFFECTS } from '../../util/AudioService';
+import { EFFECTS } from '../../services/AudioService';
 
 export default function Effects(props) {
     function renderButtons(settings) {

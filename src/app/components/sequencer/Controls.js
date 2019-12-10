@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import './Controls.css';
 
-import Clock from '../../util/Clock';
+import Metronome from '../../lib/metronome';
 
 export default function Controls(props) {
     const BPM = props.bpm;
@@ -14,13 +14,13 @@ export default function Controls(props) {
             <li className={classnames('play', 'playback')}>
                 <button 
                     className={classnames('play', {active: props.isPlaying})}
-                    onClick={Clock.start}
+                    onClick={Metronome.start}
                 >
                     play_arrow
                 </button>
                 <button
                     className={classnames('stop', {active: props.isPlaying})}
-                    onClick={Clock.stop}
+                    onClick={Metronome.stop}
                 >
                     stop
                 </button>

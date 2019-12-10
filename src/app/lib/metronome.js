@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import Audio from './AudioService';
+import Audio from '../services/AudioService';
 
 /**
  * Calculate the duration in milliseconds of 1 sequence step.

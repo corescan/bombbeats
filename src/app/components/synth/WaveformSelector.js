@@ -3,13 +3,12 @@ import PropTypes from 'prop-types';
 import Immutable from 'immutable';
 import './WaveformSelector.css';
 
-import { WAVEFORM } from '../../util/AudioService';
+import { WAVEFORM } from '../../lib/oscillator';
 import SquareBacklitButton from '../generic/SquareBacklitButton';
 
 export default function WaveformSelector(props) {
 
     function renderButtons(selection) {
-
         return Object.keys(WAVEFORM).map(key => {
             const type = WAVEFORM[key];
             return (

@@ -27,7 +27,7 @@ const FOUR_ON_THE_FLOOR = {
 }
 
 const HIP_HOP = {
-    bpm: "116",
+    bpm: "99",
     key: "HIP_HOP",
     name: "Hip Hop",
     sequence: {

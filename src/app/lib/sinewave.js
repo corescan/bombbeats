@@ -1,9 +1,9 @@
-function sineWaveAt(sampleNumber, tone) {
+export default function sineWaveAt(context, sampleNumber, tone) {
     let sampleFreq = context.sampleRate / tone
     return Math.sin(sampleNumber / (sampleFreq / (Math.PI*2)))
 }
 
-export default function playSound(tone, context) {
+export function playSound(tone, context) {
 
     let arr = [], volume = 0.2, seconds = 0.5, tone = 441
 

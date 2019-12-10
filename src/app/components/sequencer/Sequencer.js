@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import {Component} from 'react';
 import classnames from 'classnames';
 
-import Clock from '../../util/Clock';
-import Audio from '../../util/AudioService';
+import Metronome from '../../lib/metronome';
+import Audio from '../../services/AudioService';
 
 import Track from './Track';
 import Controls from './Controls';
@@ -27,7 +27,7 @@ const setEnabledTracks = sounds => {
 }
 
 const setClockParamsFromProps = (props) => {
-    Clock.setParams({
+    Metronome.setParams({
       bpm: props.beat.bpm,
       subdivision: props.beat.subdivision
     });
@@ -75,9 +75,9 @@ class Sequencer extends Component {
   }
 
   componentDidMount() {
-    Clock.addListener('start', this.handleClockStart);
-    Clock.addListener('stop', this.handleClockStop);
-    Clock.addListener('step', this.handleClockStep);
+    Metronome.addListener('start', this.handleClockStart);
+    Metronome.addListener('stop', this.handleClockStop);
+    Metronome.addListener('step', this.handleClockStep);
     document.addEventListener('keydown', this.handleKeyDown);
 
     Audio.loadAudio(this.props.sounds);
@@ -87,7 +87,7 @@ class Sequencer extends Component {
   static getDerivedStateFromProps(props, state) {
     if (props.beat.key !== state.beatKey) {
       // loaded a new beat
-      if (state.isPlaying) Clock.stop();
+      if (state.isPlaying) Metronome.stop();
       setClockParamsFromProps(props);
       state = mapBeatDataToState(props);
     }
@@ -96,27 +96,27 @@ class Sequencer extends Component {
   }
 
   componentWillUnmount() {
-    Clock.stop();
-    Clock.removeListener('start', this.handleClockStart);
-    Clock.removeListener('stop', this.handleClockStop);
-    Clock.removeListener('step', this.handleClockStep);
+    Metronome.stop();
+    Metronome.removeListener('start', this.handleClockStart);
+    Metronome.removeListener('stop', this.handleClockStop);
+    Metronome.removeListener('step', this.handleClockStep);
     document.removeEventListener('keydown', this.handleKeyDown);
   }
 
   handleKeyDown(event) {
-    event.preventDefault();
     // check key code SHIFT
     const key = event.which || event.key
     if (key === 32 || key === 'Space') {
-        this.togglePlayback()
+      event.preventDefault();
+      this.togglePlayback()
     }
   }
 
   togglePlayback() {
     if (this.state.isPlaying) {
-      Clock.stop();
+      Metronome.stop();
     } else {
-      Clock.start();
+      Metronome.start();
     }
   }
 
@@ -163,7 +163,7 @@ class Sequencer extends Component {
     this.setState({
       bpm: value
     });
-    Clock.setBPM(value);
+    Metronome.setBPM(value);
   }
 
   handleClickTrackname(soundName) {
