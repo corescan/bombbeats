@@ -7,9 +7,9 @@ const DISTORTION_AMOUNT = 33;
 const DISTORTION_CURVE = distortionCurve(DISTORTION_AMOUNT);
 
 const DEFAULT_COMPRESSION = {
-    threshold: -50,
-    knee: 40,
-    ratio: 12,
+    threshold: -12,
+    knee: 10,
+    ratio: 2,
     attack: 0.25,
     release: 0.67
 }

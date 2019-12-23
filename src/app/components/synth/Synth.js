@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import TrackPad from './TrackPad';
 import Audio from '../../services/AudioService';
-import { WAVEFORM } from '../../lib/oscillator';
 import calcHzByInterval from '../../lib/calcHzByInterval';
 
 import './Synth.css';
-import WaveformSelector from './WaveformSelector';
 import OscillatorControls from './OscillatorControls';
 
 const TRACKPAD_WIDTH = 592;         // todo: find this value (pixel width) by reference
@@ -15,6 +13,8 @@ const A0 = 27.5;                    // Hz
 
 const FREQUENCIES = new Array(TRACKPAD_WIDTH);
 const PIXELS_PER_OCTAVE = SEMITONE_RESOLUTION * SEMITONES_PER_OCTAVE;
+
+const NUM_OSCILLATORS = 2;
 
 function generateOctavesOfA(numOctaves) {
     let octavesHz = new Array(numOctaves);
@@ -47,44 +47,28 @@ export default class Synth extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            trackPadEnabled: false,
-            /**
-                to do: 
-                - don't duplicate state.
-                - get state data as props since this state is maintained in the Oscillator objects themselves.
-                - store oscillator states in a redux store
-            **/
-            osc: {
-                type: WAVEFORM.TRIANGLE,
-                pitch: 440
-            }
+            trackPadEnabled: false
         }
 
         initFrequencies();
 
-        this.synth = Audio.createSynthesizer();
-        this.synth.setWaveform(this.state.osc.type);
+        this.synth = Audio.createSynthesizer(NUM_OSCILLATORS);
 
         this.handleTrackPadMove = this.handleTrackPadMove.bind(this);
         this.handleTrackPadChange = this.handleTrackPadChange.bind(this);
         this.handleWaveformSelected = this.handleWaveformSelected.bind(this);
+        this.handleDetuneChange = this.handleDetuneChange.bind(this);
     }
 
     handleTrackPadMove(pos) {
         const x =  Math.floor(Math.abs(pos.x));
         const pitch = FREQUENCIES[x];
         this.synth.setPitch(pitch);
-        this.setState(state => ({
-            osc: {
-                type: state.osc.type,
-                pitch: pitch
-            }
-        }));
     }
 
     handleTrackPadChange(trackPadEnabled) {
         if (trackPadEnabled) {
-            const { pitch } = this.state.osc
+            const { pitch } = this.state
             this.synth.noteOn(pitch);
         } else if (this.state.trackPadEnabled) {
             this.synth.noteOff();
@@ -94,29 +78,26 @@ export default class Synth extends Component {
         });
     }
 
-    handleWaveformSelected(type) {
-        // see constructor comments: do not maintain duplicate states in Synth and this.state.
-        this.synth.setWaveform(type);
-        this.setState(state => ({
-            osc: {
-                type: type,
-                pitch: state.osc.pitch
-            }
-        }));
+    handleWaveformSelected(type, id) {
+        this.synth.setWaveform(type, id);
+    }
+
+    handleDetuneChange(osc) {
+        this.synth.setDetune(osc.detune, osc.id);
     }
 
     render() {
-        const { type } = this.state.osc
+        const { synth } = this;
         return (
             <div className='Synth--container'>
-                <label className='Synth--label'>Hold Shift &darr;</label>
+                <OscillatorControls
+                    oscillators={synth.getOscillators()}
+                    onWaveformSelect={this.handleWaveformSelected}
+                    onDetuneChange={this.handleDetuneChange}
+                />
                 <TrackPad 
                     onMouseMove={this.handleTrackPadMove}
                     onChange={this.handleTrackPadChange}
-                />
-                <WaveformSelector
-                    onSelect={this.handleWaveformSelected}
-                    selected={type}
                 />
             </div>
         )

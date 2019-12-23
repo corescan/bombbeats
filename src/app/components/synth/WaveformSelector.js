@@ -47,9 +47,10 @@ export default function WaveformSelector(props) {
             <SquareBacklitButton
                 key={key}
                 icon={getWaveformIcon(key)}
+                size={'small'}
                 enabled={selection === type}
                 onClick={() => {
-                    props.onSelect(type);
+                    props.onSelect(type, props.id);
                 }}
             />
         )})
@@ -65,5 +66,7 @@ export default function WaveformSelector(props) {
 }
 
 WaveformSelector.propTypes = {
+    id: PropTypes.number.isRequired,
+    onSelect: PropTypes.func.isRequired,
     settings: PropTypes.instanceOf(Immutable.Map)
 }

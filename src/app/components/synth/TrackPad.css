@@ -1,4 +1,5 @@
 .TrackPad--container {
+    position: relative;
     background-color: #CCC;
     height: 108px;
     width: 592px;
@@ -11,6 +12,16 @@
     background-color: rgb(76, 170, 253);
     animation: hum 1.3s infinite;
     animation-delay: 0.65s;
+}
+
+.TrackPad--label {
+    transform: rotate(-90deg);
+    position: absolute;
+    font-family: Nunito;
+    font-size: 12px;
+    left: -46px;
+    top: 42px;
+    color: #333;
 }
 
 @keyframes hum {

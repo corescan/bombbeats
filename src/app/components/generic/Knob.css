@@ -1,0 +1,57 @@
+.Knob--container {
+    position: relative;
+}
+
+.Knob--knob {
+    position: relative;
+    user-select: none;
+    cursor: pointer;
+    height: 32px;
+    width: 32px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    background-color: #333;
+}
+
+.Knob--pointer {
+    position: absolute;
+    user-select: none;
+    background-color: #f9f9f0;
+    top: 24px;
+    left: 6px;
+    border-radius: 50%;
+    height: 4px;
+    width: 4px;
+}
+
+/* .Knob--range {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+    z-index: 0;
+} */
+
+.Knob--label {
+    position: absolute;
+    cursor: pointer;
+    width: 100%;
+    font-family: monospace;
+    text-transform: uppercase;
+}
+
+.Knob--label.top {
+    bottom: 100%;
+    text-align: center;
+}
+.Knob--label.right {
+    left: 100%;
+    text-align: left;
+}
+.Knob--label.bottom {
+    top: 100%;
+    text-align: center;
+}
+.Knob--label.left {
+    text-align: right;
+    right: 100%;
+}

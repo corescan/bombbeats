@@ -1,0 +1,21 @@
+.OscillatorControls--container {
+    width: 592px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.OscillatorControls--row {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.OscillatorControls--knob {
+    margin: 0 8px;
+}
+
+.OscillatorControls--row:nth-child(2n) {
+    justify-content: flex-end;
+}

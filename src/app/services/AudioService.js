@@ -63,8 +63,8 @@ class AudioService {
         return this.audioCtx.currentTime;
     }
 
-    createSynthesizer() {
-        return new Synthesizer(this.audioCtx, 2);;
+    createSynthesizer(numberOfOscillators) {
+        return new Synthesizer(this.audioCtx, numberOfOscillators);
     }
 }
 

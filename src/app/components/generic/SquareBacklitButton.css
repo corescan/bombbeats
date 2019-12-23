@@ -25,3 +25,18 @@
     user-select: none;
     height: 32px;
 }
+
+.SquareBacklitButton--button.small {
+    padding: 4px;
+    width: 32px;
+    height: 32px;
+    border-radius: 5px;
+    margin-left: 5px;
+    margin-bottom: 5px;
+}
+
+.SquareBacklitButton--button.small .SquareBacklitButton--icon {
+    top: 4px;
+    left: 4px;
+    height: 24px;
+}

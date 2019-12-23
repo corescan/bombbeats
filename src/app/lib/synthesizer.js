@@ -1,7 +1,5 @@
 import Oscillator from './oscillator';
 
-const DETUNE = 11;
-
 export default class Synthesizer {
     constructor(context, numberOfOscillators = 1) {
         if (numberOfOscillators < 1) {
@@ -9,51 +7,60 @@ export default class Synthesizer {
         }
         this.ctx = context;
         this.numberOfOscillators = numberOfOscillators;
-        this.osc = new Array(numberOfOscillators);
+        this.oscillators = new Array(numberOfOscillators);
 
         for (let i=0; i < numberOfOscillators; i++) {
-            this.osc[i] = new Oscillator(context);
+            this.oscillators[i] = new Oscillator(context, i);
         }
-
-        // hardcode a detune value until further dev
-        this.osc[0].setDetune(DETUNE);
     }
 
     noteOn(pitch) {
         for (let i=0; i < this.numberOfOscillators; i++) {
-            this.osc[i].on(pitch);
+            this.oscillators[i].on(pitch);
         }        
     }
 
     noteOff() {
         for (let i=0; i < this.numberOfOscillators; i++) {
-            this.osc[i].off();
+            this.oscillators[i].off();
         }     
     }
 
     setPitch(pitch) {
         for (let i=0; i < this.numberOfOscillators; i++) {
-            this.osc[i].setPitch(pitch);
+            this.oscillators[i].setPitch(pitch);
         }      
     }
 
     setWaveform(type, idx) {
-        if (typeof idx === Number && idx < this.numberOfOscillators && idx >= 0) {
-            this.osc[idx].setWaveform(type);
-            return;
+        if (typeof idx === 'number') {
+            if (idx < this.numberOfOscillators && idx >= 0) {
+                this.oscillators[idx].setWaveform(type);
+                return;
+            } else { 
+                throw new Error('Invalid oscillator index provided.');
+            }
         }
 
+        // set all oscillators
         for (let i=0; i < this.numberOfOscillators; i++) {
-            this.osc[i].setWaveform(type);
+            this.oscillators[i].setWaveform(type);
         }    
-        this.osc[0].setDetune(DETUNE);
     }
 
-    setDetune(cents, id = 0) {
-        this.osc[id].setDetune(cents);
+    setDetune(cents, idx) {
+        if (typeof idx === 'number' && idx < this.numberOfOscillators && idx >= 0) {
+            this.oscillators[idx].setDetune(cents);
+            return;
+        }
+        throw new Error('Invalid oscillator index provided.');
     }
 
-    getDetune() {
-        return this.osc.map(osc => osc.detune);
+    getOscillators() {
+        return this.oscillators.map(osc => ({
+            id: osc.id,
+            detune: osc.getDetune(),
+            waveform: osc.getWaveform()
+        }))
     }
 }

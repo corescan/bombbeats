@@ -1,12 +1,12 @@
 export default {
     compressor: {
-      enabled: false
+      enabled: true
     },
     distortion: {
       enabled: false
     },
     highpass: {
-      enabled: true
+      enabled: false
     },
     lowpass: {
       enabled: false

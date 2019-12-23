@@ -8,13 +8,3 @@
     border: 1px solid #CCC;
     border-radius: 4px;
 }
-
-.Synth--label {
-    transform: rotate(-90deg);
-    position: absolute;
-    font-family: Nunito;
-    font-size: 12px;
-    left: 60px;
-    top: 84px;
-    color: #333;
-}

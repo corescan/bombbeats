@@ -85,7 +85,9 @@ export default class TrackPad extends Component {
                 onMouseEnter={this.handleMouseEnter}
                 onMouseLeave={this.handleMouseLeave}
                 onMouseMove={this.handleMouseMove}
-            />                
+            >
+                <label className='TrackPad--label'>Hold Shift &darr;</label>
+            </div>                
         )
     }
 }

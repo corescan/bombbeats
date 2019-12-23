@@ -16,7 +16,10 @@ export default function SquareBacklitButton(props) {
     }
     return (
         <button
-            className={classnames('SquareBacklitButton--button',{enabled: props.enabled})}
+            className={classnames(
+                'SquareBacklitButton--button',
+                props.size,
+                {enabled: props.enabled})}
             onClick={props.onClick}
         >
             {props.label}
@@ -32,5 +35,6 @@ SquareBacklitButton.propTypes = {
         alt: PropTypes.string,
         src: PropTypes.string
     }),
+    size: PropTypes.oneOf(['small','standard']),
     onClick: PropTypes.func.isRequired
 }

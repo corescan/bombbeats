@@ -15,8 +15,9 @@ const DEFAULT_ATTACK = 0.03;
 const DEFAULT_RELEASE = 2; // seconds
 
 export default class Oscillator {
-    constructor(context) {
+    constructor(context, id) {
         this.ctx = context;
+        this.id = id;
 
         this.osc = null;
         this.pitch = A4;
@@ -37,10 +38,10 @@ export default class Oscillator {
         this.setDetune = this.setDetune.bind(this);
     }
 
-    on(pitch) {
+    on() {
         const osc = this.ctx.createOscillator();
         osc.type = this.waveform;
-        osc.frequency.setValueAtTime(pitch, this.ctx.currentTime); // value in hertz
+        osc.frequency.setValueAtTime(this.pitch, this.ctx.currentTime); // value in hertz
         this.gainNode = this.ctx.createGain();
         this.gainNode.gain.setValueAtTime(MUTE_GAIN, this.ctx.currentTime);
         osc.connect(this.gainNode);
@@ -84,5 +85,13 @@ export default class Oscillator {
         if (this.isOn && this.osc !== null) {
             this.osc.detune.setValueAtTime(this.detune, this.ctx.currentTime);
         }
+    }
+
+    getWaveform() {
+        return this.waveform;
+    }
+
+    getDetune() {
+        return this.detune;
     }
 }
